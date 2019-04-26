@@ -1,27 +1,55 @@
 import org.jsoup.*;
 import org.jsoup.nodes.*;
 import org.jsoup.select.*;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.io.*;
-import java.util.HashMap;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.file.Path;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
+
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
+
+import static java.util.stream.Collectors.toMap;
 
 public class ThroneResults {
 
-    private ThroneResults() {
+    private ThroneResults() throws IOException {
 
-        Map<String, Integer> points = new HashMap<>();
-        File input = new File("C:\\Users\\A.Monev\\IdeaProjects\\ThroneResults\\20.html");
+        Map<String, Integer> points = new LinkedHashMap<>();
+        //File input = new File("C:\\Users\\A.Monev\\IdeaProjects\\ThroneResults\\20.html");
         Document doc = null;
-
+//        URL url = new URL("https://www.game.thronemaster.net/?game=191508");
+//        HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
+//        String line = null;
+//        StringBuilder tmp = new StringBuilder();
+//        BufferedReader in = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
+//        while ((line = in.readLine()) != null) {
+//            tmp.append(line);
+//        }
+//
+//        Document doc1 = Jsoup.parse(tmp.toString());
+//        System.out.println(doc1);
         try {
-            doc = Jsoup.parse(input, "UTF-8", "");
-            //doc = Jsoup.connect("https://www.game.thronemaster.net/?game=191508.html").get();
+            //doc = Jsoup.parse(input, "UTF-8", "");
+            doc = Jsoup.connect("https://www.game.thronemaster.net/?game=191508")
+                    .header("Accept-Encoding", "gzip, deflate")
+                    .userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/20100101 Firefox/23.0").get();
+            //System.out.println(doc);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
 
-        Elements elements = doc.select("div#stats_ladder");
+        Elements elements = Objects.requireNonNull(doc).select("div#stats_ladder");
+        System.out.println(elements);
         for (Element e : elements) {
             Elements trs = e.getElementsByTag("TR");
             for (int i = 1; i < trs.size(); i++) {
@@ -38,13 +66,51 @@ public class ThroneResults {
             }
         }
 
-        points.forEach((player, score) ->
-                System.out.println(player + " " + score));
+        Map<String, Integer> sorted = points.entrySet().stream().sorted(
+                Collections.reverseOrder(Map.Entry.comparingByValue()))
+                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2,
+                        LinkedHashMap::new));
+
+        for (int i = 0; i < sorted.size(); i++) {
+            System.out.println(String.format("%2d. %-20s %-2d", i + 1,
+                    sorted.keySet().toArray()[i], sorted.values().toArray()[i]));
+        }
 
     }
 
-    public static void main (String args[]) {
-        new ThroneResults();
+    public static void main (String[] args) throws IOException, InterruptedException, AWTException {
+        //new ThroneResults();
+//        OutputStream out = new FileOutputStream("C:\\Users\\A.Monev\\IdeaProjects\\ThroneResults\\34.html");
+//
+//        URL url = new URL("https://www.game.thronemaster.net/?game=191508");
+//        URLConnection conn = url.openConnection();
+//        conn.connect();
+//        InputStream is = conn.getInputStream();
+//
+//        byte[] buffer = new byte[8 * 1024];
+//        int len;
+//        while ((len = is.read(buffer)) > 0) {
+//            out.write(buffer, 0, len);
+//        }
+//        is.close();
+//        out.close();
+        System.setProperty("webdriver.gecko.driver", "C:\\Users\\A.Monev\\Downloads\\geckodriver-v0.24.0-win64\\geckodriver.exe");
+        WebDriver driver = new FirefoxDriver();
+        driver.get("https://www.game.thronemaster.net/?game=191508");
+
+        Robot robot = new Robot();
+
+// press Ctrl+S the Robot's way
+        robot.keyPress(KeyEvent.VK_CONTROL);
+        robot.keyPress(KeyEvent.VK_S);
+        robot.keyRelease(KeyEvent.VK_CONTROL);
+        robot.keyRelease(KeyEvent.VK_S);
+
+        Thread.sleep(2000L);
+
+// press Enter
+        robot.keyPress(KeyEvent.VK_ENTER);
+        robot.keyRelease(KeyEvent.VK_ENTER);
     }
 
 }
