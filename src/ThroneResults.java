@@ -3,6 +3,9 @@ import org.jsoup.nodes.*;
 import org.jsoup.select.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.firefox.ProfilesIni;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -94,19 +97,45 @@ public class ThroneResults {
 //        }
 //        is.close();
 //        out.close();
+//        FirefoxProfile profile = new FirefoxProfile();
+//        profile.setPreference("browser.download.dir", "C:\\Users\\Admin\\Desktop\\ScreenShot\\");
+
         System.setProperty("webdriver.gecko.driver", "C:\\Users\\A.Monev\\Downloads\\geckodriver-v0.24.0-win64\\geckodriver.exe");
-        WebDriver driver = new FirefoxDriver();
+        //ProfilesIni profile = new ProfilesIni();
+        FirefoxProfile profile = new FirefoxProfile();
+        profile.setAssumeUntrustedCertificateIssuer(false);
+        profile.setPreference("network.proxy.type", 1);
+        profile.setPreference("network.proxy.http", "localHost");
+        profile.setPreference("network.proxy.http_port",3128);
+
+        //Download setting
+        profile.setPreference("browser.download.folderList", 2);
+        profile.setPreference("browser.helperapps.neverAsk.saveToDisk","jpeg");
+        profile.setPreference("browser.download.dir", "C:\\Users\\A.Monev\\IdeaProjects\\ThroneResults");
+        FirefoxOptions opt = new FirefoxOptions();
+        opt.setProfile(profile);
+        WebDriver driver = new FirefoxDriver(opt);
         driver.get("https://www.game.thronemaster.net/?game=191508");
 
+        String pageSource = driver.getPageSource();
+        //System.out.println(pageSource);
         Robot robot = new Robot();
+
+        Thread.sleep(5000L);
+
+
+        robot.keyPress(KeyEvent.VK_ENTER);
+        robot.keyRelease(KeyEvent.VK_ENTER);
+
+        Thread.sleep(5000L);
 
 // press Ctrl+S the Robot's way
         robot.keyPress(KeyEvent.VK_CONTROL);
         robot.keyPress(KeyEvent.VK_S);
-        robot.keyRelease(KeyEvent.VK_CONTROL);
         robot.keyRelease(KeyEvent.VK_S);
+        robot.keyRelease(KeyEvent.VK_CONTROL);
 
-        Thread.sleep(2000L);
+        Thread.sleep(5000L);
 
 // press Enter
         robot.keyPress(KeyEvent.VK_ENTER);

@@ -3,7 +3,44 @@
   <component name="ChangeListManager">
     <list default="true" id="d1dd231d-8c0b-4267-8605-811f355c1387" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ThroneResults.iml" beforeDir="false" afterPath="$PROJECT_DIR$/ThroneResults.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/China.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/Czech%20Republic.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/France.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/Germany.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/Italy.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/Netherlands.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/Poland.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/Portugal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/Russian%20Federation.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/South%20Korea.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/Spain.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/United%20Kingdom.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/battle2.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/battle3.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/blind.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/city.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/cvi_map_lib.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/gameEngine2nd_17122230.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/garrison.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/houseB.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/houseG.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/houseL.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/houseM.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/houseS.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/houseT.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/icon_list.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/lang_en.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/loading.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/powerB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/powerG.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/powerL.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/powerM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/powerS.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/powerT.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/star.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/stronghold.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/styles_chat.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBEM - WCh R2 20_files/styles_main.css" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/ThroneResults/ThroneResults.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ThroneResults/ThroneResults.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ThroneResults.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ThroneResults.java" afterDir="false" />
     </list>
@@ -22,8 +59,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ThroneResults.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="21">
-              <caret line="93" column="11" lean-forward="true" selection-start-line="93" selection-start-column="11" selection-end-line="93" selection-end-column="11" />
+            <state relative-caret-position="282">
+              <caret line="106" column="55" lean-forward="true" selection-start-line="106" selection-start-column="55" selection-end-line="106" selection-end-column="55" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -37,9 +74,9 @@
     <findStrings>
       <find>lannie85</find>
       <find>Mel</find>
-      <find>stats</find>
       <find>stats_ladder</find>
       <find>stats_ladde</find>
+      <find>stats</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -64,8 +101,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -82,6 +117,8 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -135,8 +172,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1050" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1471536" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20300752" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -145,12 +183,12 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3299435" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.33559322" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.31299436" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Terminal" order="7" weight="0.3683616" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.39419588" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Messages" order="10" weight="0.3299435" />
@@ -178,8 +216,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ThroneResults.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="21">
-          <caret line="93" column="11" lean-forward="true" selection-start-line="93" selection-start-column="11" selection-end-line="93" selection-end-column="11" />
+        <state relative-caret-position="282">
+          <caret line="106" column="55" lean-forward="true" selection-start-line="106" selection-start-column="55" selection-end-line="106" selection-end-column="55" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
