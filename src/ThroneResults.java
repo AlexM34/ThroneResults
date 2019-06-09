@@ -30,8 +30,20 @@ public class ThroneResults {
 
         getFiles();
 
-        for (int game = 1; game < 25; game++) {
+        for (int game = 1; game < 13; game++) {
             process(game);
+//            getPoints("https://www.game.thronemaster.net/?game=198753");
+//            getPoints("https://www.game.thronemaster.net/?game=198768");
+//            getPoints("https://www.game.thronemaster.net/?game=198755");
+//            getPoints("https://www.game.thronemaster.net/?game=198756");
+//            getPoints("https://www.game.thronemaster.net/?game=198757");
+//            getPoints("https://www.game.thronemaster.net/?game=198762");
+//            getPoints("https://www.game.thronemaster.net/?game=198763");
+//            getPoints("https://www.game.thronemaster.net/?game=198759");
+//            getPoints("https://www.game.thronemaster.net/?game=198782");
+//            getPoints("https://www.game.thronemaster.net/?game=198764");
+//            getPoints("https://www.game.thronemaster.net/?game=198760");
+//            getPoints("https://www.game.thronemaster.net/?game=198816");
         }
 
         Map<String, Integer> sortedPoints = POINTS.entrySet().stream().sorted(
@@ -68,6 +80,89 @@ public class ThroneResults {
         }
         System.out.println(String.format("Finished - %-2s", ROUNDS[10]));
 
+    }
+
+    private void getPoints(String link) {
+        Document doc = null;
+        try {
+            doc = Jsoup.connect(link)
+                    .header("Accept-Encoding", "gzip, deflate")
+                    .userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/20100101 Firefox/23.0")
+                    .maxBodySize(0)
+                    .timeout(600000)
+                    .get();
+
+        } catch (IOException ioe) {
+            System.out.println("Exception!");
+            ioe.printStackTrace();
+        }
+
+//        Elements images = doc.select("img[src~=(?i)\\.(png|jpe?g|gif)]");
+//        for (Element image : images) {
+//
+//            System.out.println("\nsrc : " + image.attr("src"));
+//            System.out.println("height : " + image.attr("height"));
+//            System.out.println("width : " + image.attr("width"));
+//            System.out.println("alt : " + image.attr("alt"));
+//
+//        }
+
+//        System.out.println(doc.toString());
+//        Elements img = document.select("#curIcon img[src]");
+
+        Elements state = Objects.requireNonNull(doc).select("div#gameStateText");
+        boolean finished = !state.get(0).getElementsByTag("h3").isEmpty();
+        int bonus = 3;
+
+        Elements statsLadder = Objects.requireNonNull(doc).select("div#stats_ladder");
+        for (Element e : statsLadder) {
+            Elements trs = e.getElementsByTag("TR");
+            for (int i = 1; i < trs.size(); i++) {
+                String player = trs.get(i).getElementsByTag("TD").get(1).text();
+                int castles = Integer.parseInt(trs.get(i).getElementsByTag("TH").text());
+                if (i == 1) {
+                    castles += bonus;
+                }
+
+                if (!POINTS.containsKey(player)) {
+                    POINTS.put(player, castles);
+                }
+                else {
+                    int current = POINTS.get(player);
+                    POINTS.put(player, current + castles);
+                }
+            }
+        }
+
+        Elements statsSpeed = Objects.requireNonNull(doc).select("div#stats_speed");
+        for (Element e : statsSpeed) {
+            Elements trs = e.getElementsByTag("TR");
+            for (int i = 0; i < trs.size() - 1; i++) {
+                String player = trs.get(i).getElementsByTag("TD").get(1).text();
+                String text = trs.get(i).getElementsByTag("TD").get(2).text();
+                int m = text.indexOf("m");
+                double speed = Double.parseDouble(text.substring(0, m - 1));
+                int moves = Integer.parseInt(text.substring(m + 6));
+
+                if (!MINUTES.containsKey(player)) {
+                    MINUTES.put(player, speed * moves);
+                    MOVES.put(player, moves);
+                }
+                else {
+                    MINUTES.put(player, MINUTES.get(player) + speed * moves);
+                    MOVES.put(player, MOVES.get(player) + moves);
+                }
+            }
+        }
+
+        if (finished) {
+            ROUNDS[10]++;
+        }
+        else {
+            Elements gameStateContent = Objects.requireNonNull(doc).select("div#gameStateContent");
+            int round = Integer.parseInt(gameStateContent.first().child(0).child(0).text());
+            ROUNDS[round - 1]++;
+        }
     }
 
     private void process(int game) {
@@ -149,30 +244,18 @@ public class ThroneResults {
         FirefoxOptions opt = new FirefoxOptions();
         opt.setProfile(profile);
 
-        saveAs(opt, 1, "https://www.game.thronemaster.net/?game=191498");
-        saveAs(opt, 2, "https://www.game.thronemaster.net/?game=191494");
-        saveAs(opt, 3, "https://www.game.thronemaster.net/?game=191516");
-        saveAs(opt, 4, "https://www.game.thronemaster.net/?game=191476");
-        saveAs(opt, 5, "https://www.game.thronemaster.net/?game=191499");
-        saveAs(opt, 6, "https://www.game.thronemaster.net/?game=191550");
-        saveAs(opt, 7, "https://www.game.thronemaster.net/?game=191514");
-        saveAs(opt, 8, "https://www.game.thronemaster.net/?game=191512");
-        saveAs(opt, 9, "https://www.game.thronemaster.net/?game=191493");
-        saveAs(opt, 10, "https://www.game.thronemaster.net/?game=191477");
-        saveAs(opt, 11, "https://www.game.thronemaster.net/?game=191519");
-        saveAs(opt, 12, "https://www.game.thronemaster.net/?game=191478");
-        saveAs(opt, 13, "https://www.game.thronemaster.net/?game=191495");
-        saveAs(opt, 14, "https://www.game.thronemaster.net/?game=191515");
-        saveAs(opt, 15, "https://www.game.thronemaster.net/?game=191517");
-        saveAs(opt, 16, "https://www.game.thronemaster.net/?game=191500");
-        saveAs(opt, 17, "https://www.game.thronemaster.net/?game=191509");
-        saveAs(opt, 18, "https://www.game.thronemaster.net/?game=191496");
-        saveAs(opt, 19, "https://www.game.thronemaster.net/?game=191479");
-        saveAs(opt, 20, "https://www.game.thronemaster.net/?game=191508");
-        saveAs(opt, 21, "https://www.game.thronemaster.net/?game=191507");
-        saveAs(opt, 22, "https://www.game.thronemaster.net/?game=191480");
-        saveAs(opt, 23, "https://www.game.thronemaster.net/?game=191481");
-        saveAs(opt, 24, "https://www.game.thronemaster.net/?game=191497");
+        saveAs(opt, 1, "https://www.game.thronemaster.net/?game=198753");
+        saveAs(opt, 2, "https://www.game.thronemaster.net/?game=198768");
+        saveAs(opt, 3, "https://www.game.thronemaster.net/?game=198755");
+        saveAs(opt, 4, "https://www.game.thronemaster.net/?game=198756");
+        saveAs(opt, 5, "https://www.game.thronemaster.net/?game=198757");
+        saveAs(opt, 6, "https://www.game.thronemaster.net/?game=198762");
+        saveAs(opt, 7, "https://www.game.thronemaster.net/?game=198763");
+        saveAs(opt, 8, "https://www.game.thronemaster.net/?game=198759");
+        saveAs(opt, 9, "https://www.game.thronemaster.net/?game=198782");
+        saveAs(opt, 10, "https://www.game.thronemaster.net/?game=198764");
+        saveAs(opt, 11, "https://www.game.thronemaster.net/?game=198760");
+        saveAs(opt, 12, "https://www.game.thronemaster.net/?game=198816");
     }
 
     private void saveAs(FirefoxOptions opt, int number, String link)
