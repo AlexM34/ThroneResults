@@ -7,14 +7,19 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 
 import java.io.*;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.net.URL;
+import java.net.URLConnection;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.*;
 
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static java.util.Map.Entry.comparingByValue;
 import static java.util.stream.Collectors.toMap;
@@ -26,9 +31,9 @@ public class ThroneResults {
     private Map<String, Double> SPEED = new LinkedHashMap<>();
     private int[] ROUNDS = new int[11];
 
-    private ThroneResults() throws AWTException, InterruptedException {
-
-        getFiles();
+    private ThroneResults() throws AWTException, InterruptedException, IOException, ParseException {
+        stallings();
+        /*getFiles();
 
         for (int game = 1; game < 13; game++) {
             process(game);
@@ -78,8 +83,49 @@ public class ThroneResults {
         for (int i = 0; i < 10; i++) {
             System.out.println(String.format("%2d - %-2s", i + 1, ROUNDS[i]));
         }
-        System.out.println(String.format("Finished - %-2s", ROUNDS[10]));
+        System.out.println(String.format("Finished - %-2s", ROUNDS[10]));*/
 
+    }
+
+    private void stallings() throws IOException, ParseException {
+        String link = "https://www.game.thronemaster.net/?game=202283&show=log";
+        URL log = new URL(link);
+        URLConnection yc = log.openConnection();
+        BufferedReader in = new BufferedReader(new InputStreamReader(
+                yc.getInputStream()));
+        String inputLine;
+        long DAY = TimeUnit.DAYS.toMillis(1);
+        long last = Instant.now().toEpochMilli();
+        Map<String, Integer> penalties = new HashMap<>();
+        while ((inputLine = in.readLine()) != null) {
+            Pattern pattern = Pattern.compile("<nobr>(.*?)</nobr>", Pattern.DOTALL);
+            Matcher matcher = pattern.matcher(inputLine);
+//            String myDate = "2014/10/29 18:10";
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+//            Date date = sdf.parse(myDate);
+//            System.out.println(date.getTime());
+            if (matcher.find() && !matcher.group(1).equals("")) {
+                String player = matcher.group(1);
+                System.out.print(player + " ");
+                while (!(inputLine = in.readLine()).contains("<td valign=")) {}
+                inputLine = inputLine.substring(inputLine.indexOf(">") + 1);
+                String time = inputLine.substring(0, inputLine.lastIndexOf("<")).replace(",", "");
+                long ms = transform(time);
+                System.out.println(time);
+                int delay = (int) ((ms - last) / DAY);
+                if (delay >= 3 ) {
+                    penalties.merge(player, (delay - 2) * 3, Integer::sum);
+                    System.out.println("PENALTY: " + player + " stalls for " + delay + " days until " + time);
+                }
+
+                last = ms;
+            }
+        }
+
+        System.out.println();
+        System.out.println("PENALTIES");
+        penalties.forEach((player, penalty) -> System.out.println(player + " is penalised with " + penalty + " points"));
+        in.close();
     }
 
     private void getPoints(String link) {
@@ -112,7 +158,7 @@ public class ThroneResults {
 
         Elements state = Objects.requireNonNull(doc).select("div#gameStateText");
         boolean finished = !state.get(0).getElementsByTag("h3").isEmpty();
-        int bonus = 3;
+        int bonus = finished ? 3 : 0;
 
         Elements statsLadder = Objects.requireNonNull(doc).select("div#stats_ladder");
         for (Element e : statsLadder) {
@@ -245,17 +291,17 @@ public class ThroneResults {
         opt.setProfile(profile);
 
         saveAs(opt, 1, "https://www.game.thronemaster.net/?game=198753");
-        saveAs(opt, 2, "https://www.game.thronemaster.net/?game=198768");
+//        saveAs(opt, 2, "https://www.game.thronemaster.net/?game=198768");
         saveAs(opt, 3, "https://www.game.thronemaster.net/?game=198755");
         saveAs(opt, 4, "https://www.game.thronemaster.net/?game=198756");
         saveAs(opt, 5, "https://www.game.thronemaster.net/?game=198757");
         saveAs(opt, 6, "https://www.game.thronemaster.net/?game=198762");
         saveAs(opt, 7, "https://www.game.thronemaster.net/?game=198763");
         saveAs(opt, 8, "https://www.game.thronemaster.net/?game=198759");
-        saveAs(opt, 9, "https://www.game.thronemaster.net/?game=198782");
-        saveAs(opt, 10, "https://www.game.thronemaster.net/?game=198764");
+//        saveAs(opt, 9, "https://www.game.thronemaster.net/?game=198782");
+//        saveAs(opt, 10, "https://www.game.thronemaster.net/?game=198764");
         saveAs(opt, 11, "https://www.game.thronemaster.net/?game=198760");
-        saveAs(opt, 12, "https://www.game.thronemaster.net/?game=198816");
+//        saveAs(opt, 12, "https://www.game.thronemaster.net/?game=198816");
     }
 
     private void saveAs(FirefoxOptions opt, int number, String link)
@@ -312,7 +358,7 @@ public class ThroneResults {
 
         Thread.sleep(5000L);
 
-        driver.close();
+//        driver.close();
     }
 
     private int getKeyEvent(int digit) {
@@ -330,8 +376,41 @@ public class ThroneResults {
         }
     }
 
-    public static void main (String[] args) throws InterruptedException, AWTException {
-        new ThroneResults();
+    private long transform(final String time) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date date = sdf.parse(transformMonth(time));
+        long millis = date.getTime();
+//        System.out.println(millis);
+        return millis;
     }
 
+    private String transformMonth(final String time) {
+//        System.out.println(time);
+        Pattern pattern = Pattern.compile("-(.*?)-", Pattern.DOTALL);
+        Matcher matcher = pattern.matcher(time);
+        String month = matcher.find() ? matcher.group(1) : null;
+        String swap = null;
+        switch (month) {
+            case "Jan": swap = "01"; break;
+            case "Feb": swap = "02"; break;
+            case "Mar": swap = "03"; break;
+            case "Apr": swap = "04"; break;
+            case "May": swap = "05"; break;
+            case "Jun": swap = "06"; break;
+            case "Jul": swap = "07"; break;
+            case "Aug": swap = "08"; break;
+            case "Sep": swap = "09"; break;
+            case "Oct": swap = "10"; break;
+            case "Nov": swap = "11"; break;
+            case "Dec": swap = "12"; break;
+        }
+//        System.out.println(month);
+//        System.out.println(swap);
+
+        return time.replace(month, swap);
+    }
+
+    public static void main (String[] args) throws InterruptedException, AWTException, IOException, ParseException {
+        new ThroneResults();
+    }
 }
