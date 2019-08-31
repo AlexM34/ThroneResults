@@ -88,44 +88,126 @@ public class ThroneResults {
     }
 
     private void stallings() throws IOException, ParseException {
-        String link = "https://www.game.thronemaster.net/?game=202283&show=log";
-        URL log = new URL(link);
-        URLConnection yc = log.openConnection();
-        BufferedReader in = new BufferedReader(new InputStreamReader(
-                yc.getInputStream()));
-        String inputLine;
-        long DAY = TimeUnit.DAYS.toMillis(1);
-        long last = Instant.now().toEpochMilli();
-        Map<String, Integer> penalties = new HashMap<>();
-        while ((inputLine = in.readLine()) != null) {
-            Pattern pattern = Pattern.compile("<nobr>(.*?)</nobr>", Pattern.DOTALL);
-            Matcher matcher = pattern.matcher(inputLine);
+        String[] links = {"https://www.game.thronemaster.net/?game=202283&show=log",
+        "https://www.game.thronemaster.net/?game=202252&show=log",
+        "https://www.game.thronemaster.net/?game=203044&show=log",
+        "https://www.game.thronemaster.net/?game=202682&show=log",
+        "https://www.game.thronemaster.net/?game=203364&show=log",
+        "https://www.game.thronemaster.net/?game=202411&show=log",
+        "https://www.game.thronemaster.net/?game=202284&show=log",
+        "https://www.game.thronemaster.net/?game=202452&show=log",
+        "https://www.game.thronemaster.net/?game=202688&show=log",
+        "https://www.game.thronemaster.net/?game=202251&show=log",
+        "https://www.game.thronemaster.net/?game=202262&show=log",
+        "https://www.game.thronemaster.net/?game=202332&show=log",
+        "https://www.game.thronemaster.net/?game=202678&show=log",
+        "https://www.game.thronemaster.net/?game=202331&show=log",
+        "https://www.game.thronemaster.net/?game=202636&show=log",
+        "https://www.game.thronemaster.net/?game=202410&show=log",
+        "https://www.game.thronemaster.net/?game=202455&show=log",
+        "https://www.game.thronemaster.net/?game=202634&show=log",
+        "https://www.game.thronemaster.net/?game=202508&show=log",
+        "https://www.game.thronemaster.net/?game=202568&show=log",
+        "https://www.game.thronemaster.net/?game=202286&show=log",
+        "https://www.game.thronemaster.net/?game=202265&show=log",
+        "https://www.game.thronemaster.net/?game=202333&show=log",
+        "https://www.game.thronemaster.net/?game=202967&show=log",
+        "https://www.game.thronemaster.net/?game=202486&show=log",
+        "https://www.game.thronemaster.net/?game=203376&show=log",
+        "https://www.game.thronemaster.net/?game=202536&show=log",
+        "https://www.game.thronemaster.net/?game=202335&show=log",
+        "https://www.game.thronemaster.net/?game=202300&show=log",
+        "https://www.game.thronemaster.net/?game=202191&show=log",
+        "https://www.game.thronemaster.net/?game=203069&show=log",
+        "https://www.game.thronemaster.net/?game=203076&show=log",
+        "https://www.game.thronemaster.net/?game=203318&show=log",
+        "https://www.game.thronemaster.net/?game=202927&show=log",
+        "https://www.game.thronemaster.net/?game=202380&show=log",
+        "https://www.game.thronemaster.net/?game=203238&show=log",
+        "https://www.game.thronemaster.net/?game=202379&show=log",
+        "https://www.game.thronemaster.net/?game=203205&show=log",
+        "https://www.game.thronemaster.net/?game=202326&show=log",
+        "https://www.game.thronemaster.net/?game=202649&show=log",
+        "https://www.game.thronemaster.net/?game=203705&show=log",
+        "https://www.game.thronemaster.net/?game=202236&show=log",
+        "https://www.game.thronemaster.net/?game=202203&show=log",
+        "https://www.game.thronemaster.net/?game=203030&show=log",
+        "https://www.game.thronemaster.net/?game=203124&show=log",
+        "https://www.game.thronemaster.net/?game=203109&show=log",
+        "https://www.game.thronemaster.net/?game=202551&show=log",
+        "https://www.game.thronemaster.net/?game=202341&show=log",
+        "https://www.game.thronemaster.net/?game=202645&show=log",
+        "https://www.game.thronemaster.net/?game=202354&show=log",
+        "https://www.game.thronemaster.net/?game=202963&show=log",
+        "https://www.game.thronemaster.net/?game=202534&show=log",
+        "https://www.game.thronemaster.net/?game=202504&show=log",
+        "https://www.game.thronemaster.net/?game=202279&show=log",
+        "https://www.game.thronemaster.net/?game=202352&show=log",
+        "https://www.game.thronemaster.net/?game=202929&show=log",
+        "https://www.game.thronemaster.net/?game=202503&show=log",
+        "https://www.game.thronemaster.net/?game=203199&show=log",
+        "https://www.game.thronemaster.net/?game=202934&show=log",
+        "https://www.game.thronemaster.net/?game=202531&show=log",
+        "https://www.game.thronemaster.net/?game=202691&show=log",
+        "https://www.game.thronemaster.net/?game=202281&show=log",
+        "https://www.game.thronemaster.net/?game=202908&show=log"};
+
+        for (String link : links) {
+            URL log = new URL(link);
+            URLConnection yc = log.openConnection();
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    yc.getInputStream()));
+            String inputLine;
+            String title = "";
+            long DAY = TimeUnit.DAYS.toMillis(1);
+            long last = Instant.now().toEpochMilli();
+            Map<String, Integer> penalties = new HashMap<>();
+            while ((inputLine = in.readLine()) != null) {
+                if (inputLine.contains("<title>")) {
+                    Pattern pattern = Pattern.compile("<title>AGoT Game Log - (.*?)</title>", Pattern.DOTALL);
+                    Matcher matcher = pattern.matcher(inputLine);
+                    if (matcher.find()) {
+                        title = matcher.group(1);
+                    }
+//                    System.out.println(title);
+                }
+
+                Pattern pattern = Pattern.compile("<nobr>(.*?)</nobr>", Pattern.DOTALL);
+                Matcher matcher = pattern.matcher(inputLine);
 //            String myDate = "2014/10/29 18:10";
 //            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 //            Date date = sdf.parse(myDate);
 //            System.out.println(date.getTime());
-            if (matcher.find() && !matcher.group(1).equals("")) {
-                String player = matcher.group(1);
-                System.out.print(player + " ");
-                while (!(inputLine = in.readLine()).contains("<td valign=")) {}
-                inputLine = inputLine.substring(inputLine.indexOf(">") + 1);
-                String time = inputLine.substring(0, inputLine.lastIndexOf("<")).replace(",", "");
-                long ms = transform(time);
-                System.out.println(time);
-                int delay = (int) ((ms - last) / DAY);
-                if (delay >= 3 ) {
-                    penalties.merge(player, (delay - 2) * 3, Integer::sum);
-                    System.out.println("PENALTY: " + player + " stalls for " + delay + " days until " + time);
+                if (matcher.find() && !matcher.group(1).equals("")) {
+                    String player = matcher.group(1);
+                    //System.out.print(player + " ");
+                    while (!(inputLine = in.readLine()).contains("<td valign=")) {
+                    }
+                    inputLine = inputLine.substring(inputLine.indexOf(">") + 1);
+                    String time = inputLine.substring(0, inputLine.lastIndexOf("<")).replace(",", "");
+                    long ms = transform(time);
+                    //System.out.println(time);
+                    int delay = (int) ((ms - last) / DAY);
+                    if (delay >= 3) {
+                        penalties.merge(player, (delay - 2) * 3, Integer::sum);
+//                        System.out.println("PENALTY: " + player + " stalls for " + delay + " days until " + time);
+                    }
+
+                    last = ms;
                 }
-
-                last = ms;
             }
-        }
 
-        System.out.println();
-        System.out.println("PENALTIES");
-        penalties.forEach((player, penalty) -> System.out.println(player + " is penalised with " + penalty + " points"));
-        in.close();
+
+//        System.out.println();
+//        System.out.println("PENALTIES");
+            for (Map.Entry<String, Integer> entry : penalties.entrySet()) {
+                String player = entry.getKey();
+                Integer penalty = entry.getValue();
+                System.out.println(player + " is penalised with " + penalty + " points in game " + title);
+            }
+
+            in.close();
+        }
     }
 
     private void getPoints(String link) {
